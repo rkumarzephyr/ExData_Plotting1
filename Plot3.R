@@ -13,17 +13,18 @@ data <- read_delim("household_power_consumption.txt",delim = ";",na = "?",
 minDate <- parse_date_time("2007-02-01","ymd")
 maxDate <- parse_date_time("2007-02-02","ymd")
 
-mutate(data, DateTime = as_datetime(paste(data$Date,data$Time, sep = "")))
+data <- mutate(data, DateTime = as_datetime(paste(data$Date,data$Time, sep = "")))
+mydata <- subset(data,Date >= minDate & Date <= maxDate)
 
-plot(as_datetime(subset(data,Date >= minDate & Date <= maxDate)$DateTime,),
-     subset(data,Date >= minDate & Date <= maxDate)$Sub_metering_1, type ="l" , 
+plot(as_datetime(mydata$DateTime,),
+     mydata$Sub_metering_1, type ="l" , 
      ylab = "Energey Sub metering", xlab = "")
 
-lines(as_datetime(subset(data,Date >= minDate & Date <= maxDate)$DateTime),
-                  subset(data,Date >= minDate & Date <= maxDate)$Sub_metering_2 ,col = "red")
+lines(as_datetime(mydata$DateTime),
+      mydata$Sub_metering_2 ,col = "red")
 
-lines(as_datetime(subset(data,Date >= minDate & Date <= maxDate)$DateTime),
-      subset(data,Date >= minDate & Date <= maxDate)$Sub_metering_3 ,col = "blue")
+lines(as_datetime(mydata$DateTime),
+      mydata$Sub_metering_3 ,col = "blue")
 
 legend("topright", 
        legend=c('Sub_metering_1', 'Sub_metering_2', 'Sub_metering_3'),

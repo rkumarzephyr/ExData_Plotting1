@@ -13,10 +13,11 @@ data <- read_delim("household_power_consumption.txt",delim = ";",na = "?",
 minDate <- parse_date_time("2007-02-01","ymd")
 maxDate <- parse_date_time("2007-02-02","ymd")
 
-mutate(data, DateTime = as_datetime(paste(data$Date,data$Time, sep = "")))
+data <- mutate(data, DateTime = as_datetime(paste(data$Date,data$Time, sep = "")))
+mydata <- subset(data,Date >= minDate & Date <= maxDate)
 
-plot(as_datetime(subset(data,Date >= minDate & Date <= maxDate)$DateTime,),
-     subset(data,Date >= minDate & Date <= maxDate)$Global_active_power, type ="l" , 
+plot(as_datetime(mydata$DateTime,),
+     mydata$Global_active_power, type ="l" , 
      ylab = "Global Active Power(Kilowatt)", xlab = "")
 
 dev.copy(png,file = "Plot2.png")
